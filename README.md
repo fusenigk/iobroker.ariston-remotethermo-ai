@@ -12,6 +12,20 @@ ioBroker adapter for Ariston RemoteThermo devices with focus on Ariston Lydos Hy
 - energy consumption (hourly / daily / monthly kWh, measured and estimated power) — since 1.3.0
 - bundled Python bridge using `ariston==0.19.9`
 
+## Tested devices
+
+| Device | Ariston type | Library class | Status |
+| --- | --- | --- | --- |
+| Ariston Lydos Hybrid | LydosHybrid | `AristonLydosHybridDevice` | ✅ primary target of the upstream project |
+| Ariston Lydos Wifi | Lydos | – | ✅ reported working (upstream issue #1) |
+| **Ariston Velis WIFI 50** | **Velis Evo2** (`wheType 6`, `systemType 4`) | `AristonEvoDevice` | ✅ **tested 2026-11-21: live values, controls (`power`) and all energy states work** |
+
+With the Velis WIFI 50, the live values (water and target temperature, mode, ECO, heating
+request, remaining time, showers) match a direct `api/v2` query (`velis/medPlantData`) one
+to one. Consumption is read with `usages=Dhw`. Note that the cloud reports `antiLeg` as the
+anti-legionella cycle currently running, while `values.water_anti_leg` reflects the program
+setting.
+
 ## Main writable controls
 
 - `controls.mode`
@@ -117,7 +131,7 @@ Install from a GitHub custom adapter URL or from your own published repository.
 
 ## Known limitations
 
-- tested primarily against Ariston Lydos Hybrid
+- tested primarily against Ariston Lydos Hybrid; also verified on Ariston Velis WIFI 50 (Evo2), see *Tested devices*
 - some device-specific features may vary by model
 - schedule editing is not implemented; existing scheduling configured in the Ariston app is preserved
 
@@ -143,3 +157,4 @@ This adapter can now create and use a self-managed local virtual environment ins
 - energy states from `consSequencesApi8` (channel `devices.<gw>.energy`, see above)
 - new options `energyEnabled`, `energyEveryN`, `nominalPowerW`
 - fix: `controls.power` now reflects `water_heater_power` instead of being derived from the mode
+- verified on Ariston Velis WIFI 50 (Evo2, `wheType 6`)
