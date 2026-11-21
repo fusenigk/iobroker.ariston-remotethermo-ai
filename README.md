@@ -46,6 +46,13 @@ To boost heating to 75°C, set:
 
 ## Energy states (since 1.3.0)
 
+**In short:** The Ariston cloud does not report a live power value. It only keeps a
+consumption history in kWh (per hour for the last 24 h, per day for the last 7/30 days,
+per month). The adapter reads this history and turns it into ready-to-use values such as
+*today*, *yesterday*, *last 30 days* or *total*. Use them for SourceAnalytix, InfluxDB or VIS.
+It also provides two power values. `measured_power_w` is calculated from the increase in
+kWh, and `estimated_power_w` is the heater's rated power while it is heating.
+
 The consumption report `GET api/v2/remote/reports/{gw}/consSequencesApi8?usages=<type>`
 is read through the library call `device.async_update_energy()`. Because this report is slow
 and rate limited, it is not fetched on every poll but on the first poll and then every
